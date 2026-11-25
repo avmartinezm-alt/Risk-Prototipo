@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="es-PE">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#263446">
+  <meta name="description" content="Proyecto académico de dashboard del SGSI del proceso de registro de asegurados y empleadores.">
+  <title>Dashboard SGSI | Proyecto académico</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Navegación principal">
+      <div class="brand">
+        <p class="brand-kicker">PROYECTO ACADÉMICO</p>
+        <h1>Dashboard SGSI</h1>
+        <p>Registro de asegurados y empleadores</p>
+        <span class="brand-standard">ISO/IEC 27001:2022</span>
+        <button class="sidebar-collapse" id="sidebar-collapse" type="button" aria-pressed="false">Contraer menú</button>
+      </div>
+      <nav class="side-nav" aria-label="Paneles">
+        <p class="nav-group-title">PRINCIPAL</p>
+        <button class="nav-item is-active" type="button" data-panel-target="resumen"><span class="nav-icon" aria-hidden="true">R</span><span>Resumen</span></button>
+        <button class="nav-item" type="button" data-panel-target="riesgos"><span class="nav-icon" aria-hidden="true">R</span><span>Riesgos</span></button>
+        <button class="nav-item" type="button" data-panel-target="simulador"><span class="nav-icon" aria-hidden="true">S</span><span>Simulador</span></button>
+        <button class="nav-item" type="button" data-panel-target="cronograma"><span class="nav-icon" aria-hidden="true">C</span><span>Cronograma</span></button>
+        <p class="nav-group-title">CUMPLIMIENTO</p>
+        <button class="nav-item" type="button" data-panel-target="controles"><span class="nav-icon" aria-hidden="true">A</span><span>Controles (Anexo A)</span></button>
+        <button class="nav-item" type="button" data-panel-target="objetivos"><span class="nav-icon" aria-hidden="true">O</span><span>Objetivos</span></button>
+        <button class="nav-item" type="button" data-panel-target="gobernanza"><span class="nav-icon" aria-hidden="true">G</span><span>Gobernanza</span></button>
+      </nav>
+      <button class="sidebar-close" id="sidebar-close" type="button">Cerrar menú</button>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <button class="icon-button mobile-menu-button" id="mobile-menu" type="button" aria-label="Abrir menú">Menú</button>
+        <label class="global-search">
+          <span class="visually-hidden">Buscar riesgos y controles</span>
+          <span aria-hidden="true">⌕</span>
+          <input id="global-search" type="search" placeholder="Buscar riesgos y controles" autocomplete="off">
+        </label>
+        <fieldset class="window-switch">
+          <legend class="visually-hidden">Ventana de riesgo activa</legend>
+          <label><input type="radio" name="window" value="diagnostico" checked><span>DIAGNÓSTICO</span></label>
+          <label><input type="radio" name="window" value="post"><span>POST-IMPLEMENTACIÓN</span></label>
+        </fieldset>
+        <button class="presentation-button" id="presentation-toggle" type="button">Modo presentación</button>
+        <p class="cutoff-top">Datos al <span data-cutoff>Pendiente</span></p>
+      </header>
+
+      <main class="main-content">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">SISTEMA DE GESTIÓN DE SEGURIDAD DE LA INFORMACIÓN</p>
+            <h2>Registro de asegurados y empleadores</h2>
+            <p class="page-subtitle">ISO/IEC 27001:2022 · Proyecto académico</p>
+          </div>
+          <div class="heading-status">
+            <span class="draft-pill" data-draft-pill>BORRADOR</span>
+            <span class="active-window-label" id="active-window-label">DIAGNÓSTICO (pre-implementación)</span>
+          </div>
+        </div>
+
+        <div class="tabs" role="tablist" aria-label="Paneles del dashboard">
+          <button class="tab is-active" type="button" role="tab" aria-selected="true" data-panel-target="resumen">RESUMEN</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-panel-target="riesgos">RIESGOS</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-panel-target="simulador">SIMULADOR</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-panel-target="cronograma">CRONOGRAMA</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-panel-target="controles">CONTROLES</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-panel-target="objetivos">OBJETIVOS</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-panel-target="gobernanza">GOBERNANZA</button>
+        </div>
+
+        <div id="data-alert" class="data-alert" role="alert" hidden></div>
+        <noscript><p class="data-alert">Se requiere JavaScript para mostrar el dashboard.</p></noscript>
+
+        <section class="dashboard-panel is-active" id="panel-resumen" data-panel="resumen" aria-labelledby="heading-resumen">
+          <h3 id="heading-resumen" class="visually-hidden">Resumen</h3>
+          <div class="summary-rings" id="summary-rings"></div>
+          <article class="card chart-card">
+            <div class="card-heading"><div><p class="card-kicker">COMPARACIÓN DE RIESGOS</p><h4>Inherente frente a residual</h4></div><span class="window-chip">Ambas ventanas</span></div>
+            <div class="chart-wrap"><canvas id="summary-chart" aria-label="Gráfico comparativo de probabilidad por impacto"></canvas></div>
+            <div class="chart-legend" id="summary-legend"></div>
+            <div class="total-pill" id="summary-totals"></div>
+          </article>
+          <p class="panel-source">Fuente: secciones 5.1.4 y 5.2.3 del informe</p>
+        </section>
+
+        <section class="dashboard-panel" id="panel-riesgos" data-panel="riesgos" aria-labelledby="heading-riesgos" hidden>
+          <div class="panel-toolbar"><div><p class="card-kicker">ANÁLISIS DE RIESGOS</p><h3 id="heading-riesgos">Riesgos y trazabilidad</h3></div><label class="field-label">Buscar en riesgos <input id="risk-search" type="search" placeholder="ID, causa, evento o activo"></label></div>
+          <div class="table-wrap card"><table class="risk-table"><thead><tr><th>ID</th><th>Causa</th><th>Evento</th><th>Consecuencia</th><th>Activo afectado</th><th>Nivel activo</th></tr></thead><tbody id="risk-table-body"></tbody></table></div>
+          <p class="panel-source">Fuente: secciones 5.1.3, 5.1.4 y 5.2.3</p>
+        </section>
+
+        <section class="dashboard-panel" id="panel-simulador" data-panel="simulador" aria-labelledby="heading-simulador" hidden>
+          <div class="panel-toolbar"><div><p class="card-kicker">EXPLORACIÓN DIDÁCTICA</p><h3 id="heading-simulador">Mapa de calor y simulador</h3></div><span class="window-chip" id="sim-window-label"></span></div>
+          <div class="simulation-banner">SIMULACIÓN · no es el resultado oficial del informe</div>
+          <div class="simulation-layout">
+            <article class="card heat-card"><div class="card-heading"><div><p class="card-kicker">PROBABILIDAD × IMPACTO</p><h4>Mapa de calor</h4></div></div><div class="heat-map" id="heat-map" role="grid" aria-label="Mapa de calor de riesgos"></div><div class="heat-legend" id="heat-legend"></div><div class="chart-wrap compact-chart"><canvas id="simulation-chart" aria-label="Comparación oficial y simulada"></canvas></div></article>
+            <article class="card simulator-card"><div class="card-heading"><div><p class="card-kicker">ESCENARIO NO OFICIAL</p><h4>¿Qué pasa si...?</h4></div></div><p class="window-reset-note" id="window-reset-note">Cambiar de ventana restablece el simulador</p><div id="simulator-controls"></div><div class="scenario-list" id="scenario-list"></div><button class="secondary-button" id="reset-simulator" type="button">Restablecer valores oficiales</button></article>
+          </div>
+          <p class="panel-source">Simulación con fines didácticos. Valores oficiales en la sección 5.2.3.</p>
+        </section>
+
+        <section class="dashboard-panel" id="panel-cronograma" data-panel="cronograma" aria-labelledby="heading-cronograma" hidden>
+          <div class="panel-toolbar"><div><p class="card-kicker">PLAN DE TRATAMIENTO</p><h3 id="heading-cronograma">Cronograma de acciones</h3></div><label class="field-label">Filtrar por riesgo <select id="schedule-filter"><option value="">Todos los riesgos</option></select></label></div>
+          <article class="card schedule-card"><div class="schedule-head"><span>Riesgo / acción</span><span>Duración del plan</span><span>Estado documentado</span></div><div id="schedule-rows"></div><div class="schedule-scale" id="schedule-scale"></div></article>
+          <p class="panel-source">Plazos en días desde la aprobación del plan (pendiente de fecha oficial)</p>
+          <p class="panel-source" id="schedule-source"></p>
+        </section>
+
+        <section class="dashboard-panel" id="panel-controles" data-panel="controles" aria-labelledby="heading-controles" hidden>
+          <div class="panel-toolbar"><div><p class="card-kicker">DECLARACIÓN DE APLICABILIDAD</p><h3 id="heading-controles">Controles del Anexo A</h3></div><label class="field-label">Buscar control <input id="control-search" type="search" placeholder="Número o texto"></label></div>
+          <div class="control-categories" id="control-categories"></div>
+          <article class="card"><div class="card-heading"><div><p class="card-kicker">APLICABILIDAD CONDICIONADA</p><h4>Condición y evidencia requerida</h4></div></div><div id="conditional-controls"></div></article>
+          <article class="card matrix-card"><div class="card-heading"><div><p class="card-kicker">RELACIÓN CONTROL-RIESGO</p><h4>Matriz por categoría</h4></div></div><div class="matrix-wrap" id="control-matrix"></div><div class="matrix-detail" id="matrix-detail" aria-live="polite"></div></article>
+          <div class="card control-search-results" id="control-search-results" aria-live="polite"></div>
+          <p class="panel-source">Fuente: Anexo A, Declaración de Aplicabilidad (SOA-SGSI-01)</p>
+        </section>
+
+        <section class="dashboard-panel" id="panel-objetivos" data-panel="objetivos" aria-labelledby="heading-objetivos" hidden>
+          <div class="panel-toolbar"><div><p class="card-kicker">DESEMPEÑO DEL SGSI</p><h3 id="heading-objetivos">Objetivos y mediciones</h3></div></div>
+          <div class="objective-grid" id="objective-grid"></div>
+          <p class="panel-source">Fuente: sección 5.3 y Anexo A</p>
+        </section>
+
+        <section class="dashboard-panel" id="panel-gobernanza" data-panel="gobernanza" aria-labelledby="heading-gobernanza" hidden>
+          <div class="panel-toolbar"><div><p class="card-kicker">PENDIENTES DE GOBERNANZA</p><h3 id="heading-gobernanza">Gobernanza y cierre</h3></div><span class="draft-pill" data-governance-status>BORRADOR</span></div>
+          <article class="card governance-card"><div class="governance-meta"><span>Fecha de ratificación</span><strong id="ratification-date">Pendiente</strong></div><div id="governance-list"></div></article>
+          <p class="panel-source" id="governance-source"></p>
+        </section>
+
+        <footer class="global-footer"><span>Proyecto académico. Datos tomados del informe de tesis, con fines educativos. Versión de borrador.</span><span>Datos al <strong data-cutoff>Pendiente</strong>. Versión de borrador.</span></footer>
+      </main>
+    </div>
+  </div>
+
+  <div class="presentation-controls" id="presentation-controls" hidden>
+    <button class="secondary-button" id="presentation-prev" type="button">Anterior</button>
+    <span id="presentation-position"></span>
+    <button class="secondary-button" id="presentation-next" type="button">Siguiente</button>
+    <button class="icon-button" id="presentation-exit" type="button">Salir</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.6.2/dist/chart.umd.min.js"></script>
+  <script src="datos.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
